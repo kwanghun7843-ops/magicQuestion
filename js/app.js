@@ -97,6 +97,108 @@
     }
   };
 
+  const EXPLORATION_ROOMS = {
+    room2: {
+      title: "뒤섞인 마법 약초 온실",
+      badge: "2번째 방 · 관찰과 비교",
+      next: "room3",
+      fragmentTitle: "초록 탐구 조각을 얻었어요!",
+      portalText: "질문과 관련된 약초 온실의 단서를 찾았습니다.",
+      objects: [
+        {
+          id: "moonleaf", icon: "🌿", name: "빛을 잃은 달잎풀", x: 23, y: 63,
+          clues: {
+            cause: { relevant: true, text: "달잎풀의 빛줄기가 중앙탑의 별씨앗이 갈라진 순간부터 끊겨 있어요." },
+            trail: { relevant: false, text: "잎은 어두워졌지만 별빛이 지나간 흔적은 보이지 않아요." },
+            restore: { relevant: true, text: "두 갈래 잎을 서로 연결하자 아주 작은 별빛이 다시 켜졌어요." }
+          }
+        },
+        {
+          id: "vent", icon: "🌀", name: "천장의 바람 구멍", x: 72, y: 34,
+          clues: {
+            cause: { relevant: false, text: "바람은 평소와 같은 방향으로 불고 있어요." },
+            trail: { relevant: true, text: "푸른 별가루가 바람 구멍을 지나 중앙탑 쪽으로 이어져 있어요." },
+            restore: { relevant: false, text: "바람을 세게 불어도 꺼진 약초는 깨어나지 않아요." }
+          }
+        },
+        {
+          id: "wateringCrystal", icon: "💧", name: "별빛 물주기 수정", x: 72, y: 70,
+          clues: {
+            cause: { relevant: true, text: "수정에 기록된 빛의 파동이 중앙탑에서 먼저 멈춘 것을 보여 줘요." },
+            trail: { relevant: true, text: "수정 안의 별빛이 온실에서 우편실 방향으로 움직이고 있어요." },
+            restore: { relevant: true, text: "수정 조각을 올바른 홈에 놓자 주변 약초가 잠깐 반짝였어요." }
+          }
+        }
+      ]
+    },
+    room3: {
+      title: "멈춰 버린 빗자루 우편실",
+      badge: "3번째 방 · 순서와 경로",
+      next: "room4",
+      fragmentTitle: "노란 길 조각을 얻었어요!",
+      portalText: "별빛이 지나간 순서와 방향을 확인했습니다.",
+      objects: [
+        {
+          id: "portraitSeal", icon: "🖼️", name: "초상화 우편 도장", x: 18, y: 48,
+          clues: {
+            cause: { relevant: true, text: "도장의 시간이 중앙탑의 별씨앗이 갈라진 때와 정확히 같아요." },
+            trail: { relevant: true, text: "첫 번째 별가루 흔적은 초상화 회랑에서 시작되었어요." },
+            restore: { relevant: false, text: "도장을 여러 번 찍어도 빗자루는 움직이지 않아요." }
+          }
+        },
+        {
+          id: "sortingDesk", icon: "✉️", name: "별가루 분류대", x: 51, y: 72,
+          clues: {
+            cause: { relevant: true, text: "중앙탑과 연결된 우편부터 차례로 멈췄다는 기록이 남아 있어요." },
+            trail: { relevant: true, text: "별가루의 양이 회랑, 우편실, 음악 계단 순서로 많아져요." },
+            restore: { relevant: true, text: "편지를 별가루 개수 순서로 놓자 첫 번째 빗자루가 움직였어요." }
+          }
+        },
+        {
+          id: "towerDoor", icon: "🚪", name: "중앙탑 배달문", x: 82, y: 47,
+          clues: {
+            cause: { relevant: false, text: "문은 잠겨 있지만 문 자체에는 고장이 없어요." },
+            trail: { relevant: true, text: "가장 진한 별가루 발자국이 음악 계단과 중앙탑 방향으로 이어져요." },
+            restore: { relevant: true, text: "조각, 나침반, 포탈 순서로 문양을 누르자 문의 불빛이 돌아왔어요." }
+          }
+        }
+      ]
+    },
+    room4: {
+      title: "조용한 마법 음악 계단",
+      badge: "4번째 방 · 규칙과 예측",
+      next: "room5",
+      fragmentTitle: "분홍 규칙 조각을 얻었어요!",
+      portalText: "반복되는 빛과 소리의 규칙을 발견했습니다.",
+      objects: [
+        {
+          id: "glowingSteps", icon: "🎼", name: "빛나는 세 계단", x: 26, y: 70,
+          clues: {
+            cause: { relevant: false, text: "계단의 돌은 깨지지 않았고 소리도 정상이에요." },
+            trail: { relevant: true, text: "계단의 별빛이 아래에서 위, 중앙탑 쪽으로 차례로 이동했어요." },
+            restore: { relevant: true, text: "달-별-별의 반복 순서로 밟자 계단의 불빛이 되살아났어요." }
+          }
+        },
+        {
+          id: "musicBell", icon: "🔔", name: "멈춘 마법 종", x: 54, y: 38,
+          clues: {
+            cause: { relevant: true, text: "종의 마지막 울림이 별씨앗이 갈라진 순간에 갑자기 끊겼어요." },
+            trail: { relevant: false, text: "종 주변에는 별가루가 거의 남아 있지 않아요." },
+            restore: { relevant: true, text: "반복 박자에 맞춰 종을 울리자 분홍빛 조각이 반응했어요." }
+          }
+        },
+        {
+          id: "towerWindow", icon: "🔭", name: "중앙탑 관측창", x: 82, y: 55,
+          clues: {
+            cause: { relevant: true, text: "모든 마법선이 중앙탑의 갈라진 별씨앗에서 끊긴 모습이 보여요." },
+            trail: { relevant: true, text: "사라진 별빛의 마지막 반짝임이 중앙탑 안에서 가장 강해요." },
+            restore: { relevant: false, text: "창문을 열고 닫아도 마법선에는 변화가 없어요." }
+          }
+        }
+      ]
+    }
+  };
+
   const defaultState = () => ({
     version: 1,
     screen: "title",
@@ -106,6 +208,8 @@
     prediction: null,
     completedRooms: [],
     evidence: {},
+    foundClues: { room2: [], room3: [], room4: [] },
+    inspectedObjects: { room2: [], room3: [], room4: [] },
     finalAnswer: null,
     selectedEvidence: [],
     reflectionChange: "",
@@ -118,7 +222,10 @@
     room2Observed: new Set(),
     room2Note: "식물을 눌러 빛의 색과 밝기를 관찰해 보세요.",
     room3Sequence: [],
-    toastTimer: null
+    toastTimer: null,
+    exploration: null,
+    heldDirections: new Set(),
+    pendingExplorationComplete: null
   };
 
   const els = {
@@ -137,6 +244,12 @@
     portalTitle: document.querySelector("#portalTitle"),
     portalText: document.querySelector("#portalText"),
     portalNextButton: document.querySelector("#portalNextButton"),
+    clueDialog: document.querySelector("#clueDialog"),
+    clueIcon: document.querySelector("#clueIcon"),
+    clueKind: document.querySelector("#clueKind"),
+    clueTitle: document.querySelector("#clueTitle"),
+    clueText: document.querySelector("#clueText"),
+    clueContinueButton: document.querySelector("#clueContinueButton"),
     evidenceDialog: document.querySelector("#evidenceDialog"),
     closeEvidenceButton: document.querySelector("#closeEvidenceButton"),
     evidenceList: document.querySelector("#evidenceList"),
@@ -151,7 +264,11 @@
   function loadState() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      return saved && saved.version === 1 ? { ...defaultState(), ...saved } : defaultState();
+      if (!saved || saved.version !== 1) return defaultState();
+      const clean = { ...defaultState(), ...saved };
+      clean.foundClues = { room2: [], room3: [], room4: [], ...(saved.foundClues || {}) };
+      clean.inspectedObjects = { room2: [], room3: [], room4: [], ...(saved.inspectedObjects || {}) };
+      return clean;
     } catch {
       return defaultState();
     }
@@ -235,11 +352,12 @@
     els.soundButton.textContent = state.sound ? "🔊" : "🔇";
     if (showTop) renderProgress();
 
-    const actors = ["room2", "room3", "room4", "room5"].includes(state.screen);
-    showActors(actors, state.screen === "room3" ? "walk" : "idle");
+    const actors = state.screen === "room5";
+    showActors(actors, "idle");
   }
 
   function render() {
+    stopExploration();
     renderChrome();
     els.content.className = "scene-content";
 
@@ -418,169 +536,228 @@
   }
 
   function renderRoom2() {
-    setBackground("room2");
-    const complete = state.completedRooms.includes("room2");
-    if (complete) {
-      els.content.innerHTML = completedRoomMarkup("약초의 특징을 비교했어요.", state.evidence.room2, "room3");
-      bindReopenPortal("room3", "room2", "초록 비교 조각과 함께 우편실로 이동해요.");
-      return;
-    }
-
-    const specimens = [
-      { id: "moonleaf", icon: "🌿", name: "달잎풀", note: "푸른빛이 약하고 잎이 아래로 처졌어요." },
-      { id: "dewflower", icon: "🪻", name: "이슬꽃", note: "푸른빛이 약하고 꽃잎이 닫혀 있어요." },
-      { id: "sunvine", icon: "🌻", name: "햇빛덩굴", note: "금빛이 밝고 줄기가 중앙탑 쪽을 향해요." }
-    ];
-    const observedAll = runtime.room2Observed.size === specimens.length;
-
-    els.content.innerHTML = `
-      <section class="mission-card">
-        <span class="mission-badge">2번째 방 · 비교와 분류</span>
-        <h2>뒤섞인 마법 약초 온실</h2>
-        <p>세 식물을 모두 관찰한 뒤, 특징이 다른 하나를 찾아보세요.</p>
-        <div class="specimen-grid">
-          ${specimens.map(item => `
-            <button class="specimen ${runtime.room2Observed.has(item.id) ? "observed" : ""}" data-specimen="${item.id}" type="button">
-              <span>${item.icon}</span><strong>${item.name}</strong>
-            </button>`).join("")}
-        </div>
-        <p class="mission-progress">관찰 ${runtime.room2Observed.size} / 3</p>
-        <div class="observation-note">${runtime.room2Note}</div>
-        ${observedAll ? `
-          <h3>어떤 식물의 특징이 다른가요?</h3>
-          <div class="button-row">
-            ${specimens.map(item => `<button class="secondary-button" data-odd="${item.id}" type="button">${item.name}</button>`).join("")}
-          </div>` : ""}
-      </section>`;
-
-    document.querySelectorAll("[data-specimen]").forEach(button => {
-      button.addEventListener("click", () => {
-        const item = specimens.find(specimen => specimen.id === button.dataset.specimen);
-        runtime.room2Observed.add(item.id);
-        runtime.room2Note = `<strong>${item.name}</strong>: ${item.note}`;
-        playTone(480 + runtime.room2Observed.size * 60, 0.08);
-        renderRoom2();
-      });
-    });
-
-    document.querySelectorAll("[data-odd]").forEach(button => {
-      button.addEventListener("click", () => {
-        if (button.dataset.odd !== "sunvine") {
-          showToast("두 식물의 빛과 잎 모양을 다시 비교해 보세요.");
-          playTone(210, 0.12);
-          return;
-        }
-        state.evidence.room2 = currentQuestion().evidences.room2;
-        completeRoom("room2", "room3", "초록 비교 조각을 얻었어요!", state.evidence.room2);
-      });
-    });
+    renderExplorationRoom("room2");
   }
 
   function renderRoom3() {
-    setBackground("room3");
-    const complete = state.completedRooms.includes("room3");
-    if (complete) {
-      els.content.innerHTML = completedRoomMarkup("별가루의 이동 순서를 찾았어요.", state.evidence.room3, "room4");
-      bindReopenPortal("room4", "room3", "노란 길 조각과 함께 음악 계단으로 이동해요.");
-      return;
-    }
-
-    const routes = [
-      { id: "gallery", icon: "🖼️", name: "초상화 회랑", dust: "별가루 ✦" },
-      { id: "mail", icon: "🧹", name: "빗자루 우편실", dust: "별가루 ✦✦" },
-      { id: "stairs", icon: "🎵", name: "음악 계단", dust: "별가루 ✦✦✦" }
-    ];
-
-    els.content.innerHTML = `
-      <section class="mission-card">
-        <span class="mission-badge">3번째 방 · 순서와 경로</span>
-        <h2>잃어버린 빗자루 우편실</h2>
-        <p>별가루가 적은 장소부터 많은 장소 순서로 눌러 이동 경로를 완성하세요.</p>
-        <div class="route-grid">
-          ${routes.map(item => `
-            <button class="route-card ${runtime.room3Sequence.includes(item.id) ? "selected" : ""}" data-route="${item.id}" type="button">
-              <span>${item.icon}</span><strong>${item.name}</strong><small>${item.dust}</small>
-            </button>`).join("")}
-        </div>
-        <div class="sequence-box">
-          ${runtime.room3Sequence.length
-            ? runtime.room3Sequence.map(id => routes.find(item => item.id === id).name).join(" → ")
-            : "장소를 순서대로 선택해 주세요."}
-        </div>
-        <div class="button-row">
-          <button id="clearRoute" class="secondary-button" type="button">순서 지우기</button>
-          <button id="checkRoute" class="primary-button" type="button" ${runtime.room3Sequence.length !== 3 ? "disabled" : ""}>경로 확인</button>
-        </div>
-      </section>`;
-
-    document.querySelectorAll("[data-route]").forEach(button => {
-      button.addEventListener("click", () => {
-        const id = button.dataset.route;
-        if (!runtime.room3Sequence.includes(id) && runtime.room3Sequence.length < 3) {
-          runtime.room3Sequence.push(id);
-          playTone(430 + runtime.room3Sequence.length * 90, 0.08);
-          renderRoom3();
-        }
-      });
-    });
-
-    document.querySelector("#clearRoute").addEventListener("click", () => {
-      runtime.room3Sequence = [];
-      renderRoom3();
-    });
-
-    document.querySelector("#checkRoute").addEventListener("click", () => {
-      const answer = runtime.room3Sequence.join(",");
-      if (answer !== "gallery,mail,stairs") {
-        runtime.room3Sequence = [];
-        showToast("별가루 표시의 개수를 다시 살펴보세요.");
-        playTone(200, 0.12);
-        renderRoom3();
-        return;
-      }
-      state.evidence.room3 = currentQuestion().evidences.room3;
-      completeRoom("room3", "room4", "노란 길 조각을 얻었어요!", state.evidence.room3);
-    });
+    renderExplorationRoom("room3");
   }
 
   function renderRoom4() {
-    setBackground("room4");
-    const complete = state.completedRooms.includes("room4");
-    if (complete) {
-      els.content.innerHTML = completedRoomMarkup("반복되는 빛의 규칙을 찾았어요.", state.evidence.room4, "room5");
-      bindReopenPortal("room5", "room4", "분홍 규칙 조각과 함께 중앙탑으로 이동해요.");
+    renderExplorationRoom("room4");
+  }
+
+  function renderExplorationRoom(roomId) {
+    setBackground(roomId);
+    const room = EXPLORATION_ROOMS[roomId];
+    const question = currentQuestion();
+    if (!question) {
+      go("room1");
       return;
     }
 
+    if (state.completedRooms.includes(roomId)) {
+      els.content.innerHTML = completedRoomMarkup(`${room.title} 탐구를 마쳤어요.`, state.evidence[roomId], room.next);
+      bindReopenPortal(room.next, roomId, room.portalText);
+      return;
+    }
+
+    const found = state.foundClues[roomId] || [];
+    els.content.classList.add("explore-mode");
     els.content.innerHTML = `
-      <section class="mission-card">
-        <span class="mission-badge">4번째 방 · 규칙과 예측</span>
-        <h2>조용한 마법 음악 계단</h2>
-        <p>빛나는 계단의 규칙을 보고 물음표 자리에 올 모양을 예측하세요.</p>
-        <div class="pattern-sequence" aria-label="달, 별, 별, 달, 별, 별, 물음표">
-          <span class="pattern-chip">🌙</span><span class="pattern-chip">⭐</span><span class="pattern-chip">⭐</span>
-          <span class="pattern-chip">🌙</span><span class="pattern-chip">⭐</span><span class="pattern-chip">⭐</span>
-          <span class="pattern-chip mystery">?</span>
+      <section id="exploreWorld" class="explore-world" aria-label="${room.title} 탐험 화면">
+        <div class="explore-hud">
+          <div>
+            <span class="mission-badge">${room.badge}</span>
+            <h2>${room.title}</h2>
+            <p><strong>나의 질문</strong> · ${question.title}</p>
+          </div>
+          <div class="clue-counter" aria-label="핵심 단서 ${found.length}개 중 2개">
+            <span>핵심 단서</span><strong>${found.length} / 2</strong>
+          </div>
         </div>
-        <div class="pattern-options">
-          <button class="pattern-option" data-pattern="moon" type="button"><span>🌙</span>달</button>
-          <button class="pattern-option" data-pattern="star" type="button"><span>⭐</span>별</button>
-          <button class="pattern-option" data-pattern="bell" type="button"><span>🔔</span>종</button>
+
+        <div class="explore-tip">방향키로 이동하고, 빛나는 물체 가까이에서 <strong>조사</strong>하세요.</div>
+
+        ${room.objects.map(object => {
+          const isFound = found.includes(object.id);
+          const inspected = (state.inspectedObjects[roomId] || []).includes(object.id);
+          return `<div class="world-object ${isFound ? "found" : ""} ${inspected && !isFound ? "checked" : ""}"
+            data-object-id="${object.id}" style="left:${object.x}%;top:${object.y}%" aria-label="${object.name}">
+            <span>${isFound ? "✓" : object.icon}</span><small>${isFound ? "단서 획득" : inspected ? "확인함" : "?"}</small>
+          </div>`;
+        }).join("")}
+
+        <div id="explorerAvatar" class="explorer-avatar" aria-label="탐험 캐릭터"></div>
+        <div id="nearbyPrompt" class="nearby-prompt">빛나는 물체를 찾아 이동해요!</div>
+
+        <div class="explore-controls" aria-label="탐험 조작 버튼">
+          <div class="dpad" aria-label="방향키">
+            <button class="dpad-button up" data-direction="up" type="button" aria-label="위로 이동">▲</button>
+            <button class="dpad-button left" data-direction="left" type="button" aria-label="왼쪽으로 이동">◀</button>
+            <button class="dpad-button down" data-direction="down" type="button" aria-label="아래로 이동">▼</button>
+            <button class="dpad-button right" data-direction="right" type="button" aria-label="오른쪽으로 이동">▶</button>
+          </div>
+          <button id="inspectButton" class="inspect-button" type="button"><span>🔍</span>조사</button>
         </div>
-        <p class="helper-text">모양을 누르면 서로 다른 마법 소리도 들을 수 있어요.</p>
       </section>`;
 
-    document.querySelectorAll("[data-pattern]").forEach(button => {
-      button.addEventListener("click", () => {
-        const tones = { moon: 420, star: 650, bell: 840 };
-        playTone(tones[button.dataset.pattern], 0.13);
-        if (button.dataset.pattern !== "moon") {
-          showToast("세 개씩 반복되는 묶음을 다시 찾아보세요.");
-          return;
-        }
-        state.evidence.room4 = currentQuestion().evidences.room4;
-        completeRoom("room4", "room5", "분홍 규칙 조각을 얻었어요!", state.evidence.room4);
-      });
+    startExploration(roomId);
+  }
+
+  function startExploration(roomId) {
+    const room = EXPLORATION_ROOMS[roomId];
+    const avatar = document.querySelector("#explorerAvatar");
+    const prompt = document.querySelector("#nearbyPrompt");
+    const inspectButton = document.querySelector("#inspectButton");
+    if (!avatar || !prompt || !inspectButton) return;
+
+    runtime.exploration = {
+      roomId,
+      x: 50,
+      y: 84,
+      nearbyId: null,
+      avatar,
+      prompt,
+      inspectButton,
+      lastTime: performance.now(),
+      raf: null
+    };
+    runtime.heldDirections.clear();
+
+    document.querySelectorAll("[data-direction]").forEach(button => {
+      const start = event => {
+        event.preventDefault();
+        runtime.heldDirections.add(button.dataset.direction);
+      };
+      const end = event => {
+        event.preventDefault();
+        runtime.heldDirections.delete(button.dataset.direction);
+      };
+      button.addEventListener("pointerdown", start);
+      button.addEventListener("pointerup", end);
+      button.addEventListener("pointercancel", end);
+      button.addEventListener("pointerleave", end);
+    });
+    inspectButton.addEventListener("click", inspectNearbyObject);
+
+    updateExplorerView(room);
+    runtime.exploration.raf = requestAnimationFrame(explorationLoop);
+  }
+
+  function stopExploration() {
+    if (runtime.exploration?.raf) cancelAnimationFrame(runtime.exploration.raf);
+    runtime.exploration = null;
+    runtime.heldDirections.clear();
+  }
+
+  function explorationLoop(now) {
+    const explorer = runtime.exploration;
+    if (!explorer) return;
+    const room = EXPLORATION_ROOMS[explorer.roomId];
+    const delta = Math.min((now - explorer.lastTime) / 1000, 0.05);
+    explorer.lastTime = now;
+    const speed = 29;
+    let dx = 0;
+    let dy = 0;
+    if (runtime.heldDirections.has("left")) dx -= 1;
+    if (runtime.heldDirections.has("right")) dx += 1;
+    if (runtime.heldDirections.has("up")) dy -= 1;
+    if (runtime.heldDirections.has("down")) dy += 1;
+    if (dx && dy) {
+      dx *= 0.707;
+      dy *= 0.707;
+    }
+    explorer.x = Math.max(6, Math.min(94, explorer.x + dx * speed * delta));
+    explorer.y = Math.max(27, Math.min(86, explorer.y + dy * speed * delta));
+    explorer.avatar.classList.toggle("walking", Boolean(dx || dy));
+    explorer.avatar.classList.toggle("face-left", dx < 0);
+    if (dx > 0) explorer.avatar.classList.remove("face-left");
+    updateExplorerView(room);
+    explorer.raf = requestAnimationFrame(explorationLoop);
+  }
+
+  function updateExplorerView(room) {
+    const explorer = runtime.exploration;
+    if (!explorer) return;
+    explorer.avatar.style.left = `${explorer.x}%`;
+    explorer.avatar.style.top = `${explorer.y}%`;
+
+    let nearest = null;
+    let nearestDistance = Infinity;
+    room.objects.forEach(object => {
+      const dx = explorer.x - object.x;
+      const dy = (explorer.y - object.y) * 1.35;
+      const distance = Math.hypot(dx, dy);
+      if (distance < nearestDistance) {
+        nearest = object;
+        nearestDistance = distance;
+      }
+    });
+    explorer.nearbyId = nearestDistance <= 11 ? nearest.id : null;
+    explorer.inspectButton.classList.toggle("ready", Boolean(explorer.nearbyId));
+    explorer.inspectButton.disabled = !explorer.nearbyId;
+    explorer.prompt.textContent = explorer.nearbyId
+      ? `${nearest.name} 가까이에 있어요. 조사해 볼까요?`
+      : "빛나는 물체를 찾아 이동해요!";
+  }
+
+  function inspectNearbyObject() {
+    const explorer = runtime.exploration;
+    if (!explorer?.nearbyId) {
+      showToast("빛나는 물체에 조금 더 가까이 가 보세요.");
+      return;
+    }
+    const room = EXPLORATION_ROOMS[explorer.roomId];
+    const object = room.objects.find(item => item.id === explorer.nearbyId);
+    const clue = object.clues[state.questionId];
+    const inspected = state.inspectedObjects[explorer.roomId];
+    const found = state.foundClues[explorer.roomId];
+    if (!inspected.includes(object.id)) inspected.push(object.id);
+
+    let newlyFound = false;
+    if (clue.relevant && !found.includes(object.id)) {
+      found.push(object.id);
+      newlyFound = true;
+      playSuccessSound();
+    } else {
+      playTone(clue.relevant ? 620 : 330, 0.1);
+    }
+    saveState();
+
+    els.clueIcon.textContent = clue.relevant ? "✨" : "🔎";
+    els.clueKind.textContent = clue.relevant ? `질문과 연결되는 핵심 단서 ${found.length} / 2` : "관찰했지만 다른 단서예요";
+    els.clueTitle.textContent = object.name;
+    els.clueText.textContent = clue.text;
+    els.clueContinueButton.textContent = found.length >= 2 ? "단서 조각으로 포탈 열기" : "탐험 계속하기";
+    runtime.pendingExplorationComplete = newlyFound && found.length >= 2 ? explorer.roomId : null;
+    els.clueDialog.showModal();
+  }
+
+  function finishExplorationRoom(roomId) {
+    const room = EXPLORATION_ROOMS[roomId];
+    const found = state.foundClues[roomId];
+    state.evidence[roomId] = found.map(id => {
+      const object = room.objects.find(item => item.id === id);
+      return object.clues[state.questionId].text;
+    }).join(" ");
+    completeRoom(roomId, room.next, room.fragmentTitle, room.portalText);
+  }
+
+  function refreshExplorationStatus(roomId) {
+    const found = state.foundClues[roomId] || [];
+    const inspected = state.inspectedObjects[roomId] || [];
+    const counter = document.querySelector(".clue-counter strong");
+    if (counter) counter.textContent = `${found.length} / 2`;
+    document.querySelectorAll("[data-object-id]").forEach(marker => {
+      const id = marker.dataset.objectId;
+      const isFound = found.includes(id);
+      const wasInspected = inspected.includes(id);
+      marker.classList.toggle("found", isFound);
+      marker.classList.toggle("checked", wasInspected && !isFound);
+      const object = EXPLORATION_ROOMS[roomId].objects.find(item => item.id === id);
+      marker.querySelector("span").textContent = isFound ? "✓" : object.icon;
+      marker.querySelector("small").textContent = isFound ? "단서 획득" : wasInspected ? "확인함" : "?";
     });
   }
 
@@ -879,9 +1056,48 @@
     resetState(true);
   });
 
-  [els.portalDialog, els.evidenceDialog, els.resetDialog].forEach(dialog => {
+  els.clueContinueButton.addEventListener("click", () => {
+    els.clueDialog.close();
+    const roomId = runtime.pendingExplorationComplete;
+    runtime.pendingExplorationComplete = null;
+    if (roomId) finishExplorationRoom(roomId);
+    else if (runtime.exploration) refreshExplorationStatus(runtime.exploration.roomId);
+  });
+
+  els.clueDialog.addEventListener("cancel", event => event.preventDefault());
+
+  const keyToDirection = {
+    ArrowUp: "up", w: "up", W: "up",
+    ArrowDown: "down", s: "down", S: "down",
+    ArrowLeft: "left", a: "left", A: "left",
+    ArrowRight: "right", d: "right", D: "right"
+  };
+
+  window.addEventListener("keydown", event => {
+    if (!runtime.exploration || els.clueDialog.open || els.portalDialog.open) return;
+    const direction = keyToDirection[event.key];
+    if (direction) {
+      event.preventDefault();
+      runtime.heldDirections.add(direction);
+      return;
+    }
+    if ((event.key === " " || event.key === "e" || event.key === "E") && !event.repeat) {
+      event.preventDefault();
+      inspectNearbyObject();
+    }
+  });
+
+  window.addEventListener("keyup", event => {
+    const direction = keyToDirection[event.key];
+    if (direction) runtime.heldDirections.delete(direction);
+  });
+
+  window.addEventListener("pointerup", () => runtime.heldDirections.clear());
+  window.addEventListener("blur", () => runtime.heldDirections.clear());
+
+  [els.portalDialog, els.evidenceDialog, els.resetDialog, els.clueDialog].forEach(dialog => {
     dialog.addEventListener("click", event => {
-      if (event.target === dialog && dialog !== els.portalDialog) dialog.close();
+      if (event.target === dialog && ![els.portalDialog, els.clueDialog].includes(dialog)) dialog.close();
     });
   });
 
