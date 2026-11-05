@@ -577,14 +577,14 @@
           </div>
         </div>
 
-        <div class="explore-tip">방향키로 이동하고, 빛나는 물체 가까이에서 <strong>조사</strong>하세요.</div>
+        <div class="explore-tip">방을 탐험해 보세요. 단서에 가까워지면 작은 별빛이 반짝입니다.</div>
 
         ${room.objects.map(object => {
           const isFound = found.includes(object.id);
           const inspected = (state.inspectedObjects[roomId] || []).includes(object.id);
           return `<div class="world-object ${isFound ? "found" : ""} ${inspected && !isFound ? "checked" : ""}"
-            data-object-id="${object.id}" style="left:${object.x}%;top:${object.y}%" aria-label="${object.name}">
-            <span>${isFound ? "✓" : object.icon}</span><small>${isFound ? "단서 획득" : inspected ? "확인함" : "?"}</small>
+            data-object-id="${object.id}" style="left:${object.x}%;top:${object.y}%" aria-hidden="true">
+            <span class="sparkle-core">✦</span><span class="found-mark">✓</span>
           </div>`;
         }).join("")}
 
@@ -616,6 +616,11 @@
       roomId,
       x: 50,
       y: 84,
+      vx: 0,
+      vy: 0,
+      facingLeft: false,
+      walkTime: 0,
+      walkFrame: -1,
       nearbyId: null,
       avatar,
       prompt,
@@ -657,7 +662,7 @@
     const room = EXPLORATION_ROOMS[explorer.roomId];
     const delta = Math.min((now - explorer.lastTime) / 1000, 0.05);
     explorer.lastTime = now;
-    const speed = 29;
+    const speed = 22;
     let dx = 0;
     let dy = 0;
     if (runtime.heldDirections.has("left")) dx -= 1;
@@ -668,13 +673,53 @@
       dx *= 0.707;
       dy *= 0.707;
     }
-    explorer.x = Math.max(6, Math.min(94, explorer.x + dx * speed * delta));
-    explorer.y = Math.max(27, Math.min(86, explorer.y + dy * speed * delta));
-    explorer.avatar.classList.toggle("walking", Boolean(dx || dy));
-    explorer.avatar.classList.toggle("face-left", dx < 0);
-    if (dx > 0) explorer.avatar.classList.remove("face-left");
+
+    const targetVx = dx * speed;
+    const targetVy = dy * speed;
+    const easing = 1 - Math.exp(-(dx || dy ? 10 : 15) * delta);
+    explorer.vx += (targetVx - explorer.vx) * easing;
+    explorer.vy += (targetVy - explorer.vy) * easing;
+    if (Math.abs(explorer.vx) < 0.08 && !dx) explorer.vx = 0;
+    if (Math.abs(explorer.vy) < 0.08 && !dy) explorer.vy = 0;
+
+    const nextX = explorer.x + explorer.vx * delta;
+    const nextY = explorer.y + explorer.vy * delta;
+    explorer.x = Math.max(6, Math.min(94, nextX));
+    explorer.y = Math.max(27, Math.min(86, nextY));
+    if (explorer.x !== nextX) explorer.vx = 0;
+    if (explorer.y !== nextY) explorer.vy = 0;
+
+    const movingSpeed = Math.hypot(explorer.vx, explorer.vy);
+    const walking = movingSpeed > 0.55;
+    if (explorer.vx < -0.6) explorer.facingLeft = true;
+    if (explorer.vx > 0.6) explorer.facingLeft = false;
+    explorer.avatar.classList.toggle("walking", walking);
+    explorer.avatar.classList.toggle("face-left", explorer.facingLeft);
+    updateWalkFrame(explorer, delta, walking, movingSpeed / speed);
     updateExplorerView(room);
     explorer.raf = requestAnimationFrame(explorationLoop);
+  }
+
+  function updateWalkFrame(explorer, delta, walking, speedRatio) {
+    if (!walking) {
+      explorer.walkTime = 0;
+      explorer.walkFrame = -1;
+      explorer.avatar.style.backgroundPosition = "0% 0%";
+      explorer.avatar.style.setProperty("--frame-shift", "0px");
+      explorer.avatar.style.setProperty("--step-bob", "0px");
+      return;
+    }
+
+    explorer.walkTime += delta * Math.max(0.72, Math.min(1.05, speedRatio));
+    const frame = Math.floor(explorer.walkTime / 0.115) % 6;
+    explorer.walkFrame = frame;
+    const positions = [0, 20, 40, 60, 80, 100];
+    const alignment = [-8, 0, 0, 1, -3, 3];
+    const bob = [0, -2, 0, -3, -1, -2];
+    const signedShift = alignment[frame] * (explorer.facingLeft ? -1 : 1);
+    explorer.avatar.style.backgroundPosition = `${positions[frame]}% 100%`;
+    explorer.avatar.style.setProperty("--frame-shift", `${signedShift}px`);
+    explorer.avatar.style.setProperty("--step-bob", `${bob[frame]}px`);
   }
 
   function updateExplorerView(room) {
@@ -685,21 +730,29 @@
 
     let nearest = null;
     let nearestDistance = Infinity;
+    let hasHint = false;
     room.objects.forEach(object => {
       const dx = explorer.x - object.x;
       const dy = (explorer.y - object.y) * 1.35;
       const distance = Math.hypot(dx, dy);
-      if (distance < nearestDistance) {
+      const marker = document.querySelector(`[data-object-id="${object.id}"]`);
+      const inspected = (state.inspectedObjects[explorer.roomId] || []).includes(object.id);
+      const proximity = !inspected && distance <= 20;
+      const nearby = !inspected && distance <= 11;
+      marker?.classList.toggle("proximity", proximity);
+      marker?.classList.toggle("nearby", nearby);
+      if (proximity) hasHint = true;
+      if (!inspected && distance < nearestDistance) {
         nearest = object;
         nearestDistance = distance;
       }
     });
-    explorer.nearbyId = nearestDistance <= 11 ? nearest.id : null;
+    explorer.nearbyId = nearest && nearestDistance <= 11 ? nearest.id : null;
     explorer.inspectButton.classList.toggle("ready", Boolean(explorer.nearbyId));
     explorer.inspectButton.disabled = !explorer.nearbyId;
     explorer.prompt.textContent = explorer.nearbyId
-      ? `${nearest.name} 가까이에 있어요. 조사해 볼까요?`
-      : "빛나는 물체를 찾아 이동해요!";
+      ? "바로 근처에서 별빛이 강하게 반짝여요. 조사해 볼까요?"
+      : hasHint ? "가까운 곳에서 희미한 별빛이 반짝여요." : "방 안을 천천히 탐험해 보세요.";
   }
 
   function inspectNearbyObject() {
@@ -755,10 +808,9 @@
       const wasInspected = inspected.includes(id);
       marker.classList.toggle("found", isFound);
       marker.classList.toggle("checked", wasInspected && !isFound);
-      const object = EXPLORATION_ROOMS[roomId].objects.find(item => item.id === id);
-      marker.querySelector("span").textContent = isFound ? "✓" : object.icon;
-      marker.querySelector("small").textContent = isFound ? "단서 획득" : wasInspected ? "확인함" : "?";
+      marker.classList.remove("proximity", "nearby");
     });
+    updateExplorerView(EXPLORATION_ROOMS[roomId]);
   }
 
   function renderRoom5() {
