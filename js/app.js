@@ -2,6 +2,7 @@
   "use strict";
 
   const STORAGE_KEY = "magicSchoolInquiryStateV1";
+  const BGM_VOLUME = 0.3;
 
   const BG = {
     title: "./assets/images/title.png",
@@ -235,6 +236,7 @@
     progressNav: document.querySelector("#progressNav"),
     actorLayer: document.querySelector("#actorLayer"),
     heroSprite: document.querySelector("#heroSprite"),
+    backgroundMusic: document.querySelector("#backgroundMusic"),
     soundButton: document.querySelector("#soundButton"),
     homeButton: document.querySelector("#homeButton"),
     evidenceButton: document.querySelector("#evidenceButton"),
@@ -260,6 +262,7 @@
   };
 
   let state = loadState();
+  els.backgroundMusic.volume = BGM_VOLUME;
 
   function loadState() {
     try {
@@ -392,8 +395,12 @@
         </div>
       </section>`;
 
-    document.querySelector("#continueButton")?.addEventListener("click", () => go(state.resumeScreen || "room1"));
+    document.querySelector("#continueButton")?.addEventListener("click", () => {
+      playBackgroundMusic();
+      go(state.resumeScreen || "room1");
+    });
     document.querySelector("#startButton").addEventListener("click", () => {
+      playBackgroundMusic();
       if (resumable) {
         els.resetDialog.showModal();
       } else {
@@ -1097,6 +1104,22 @@
     }
   }
 
+  function playBackgroundMusic() {
+    if (!state.sound) {
+      els.backgroundMusic.pause();
+      return;
+    }
+    els.backgroundMusic.volume = BGM_VOLUME;
+    const playRequest = els.backgroundMusic.play();
+    playRequest?.catch(() => {
+      // Mobile browsers may wait for the next direct button press before playing.
+    });
+  }
+
+  function pauseBackgroundMusic() {
+    els.backgroundMusic.pause();
+  }
+
   function playSuccessSound() {
     if (!state.sound) return;
     [520, 660, 820].forEach((frequency, index) => {
@@ -1108,7 +1131,12 @@
     state.sound = !state.sound;
     saveState();
     els.soundButton.textContent = state.sound ? "🔊" : "🔇";
-    if (state.sound) playTone(620, 0.08);
+    if (state.sound) {
+      playBackgroundMusic();
+      playTone(620, 0.08);
+    } else {
+      pauseBackgroundMusic();
+    }
   });
 
   els.homeButton.addEventListener("click", () => {
