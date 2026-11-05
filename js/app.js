@@ -3,6 +3,7 @@
 
   const STORAGE_KEY = "magicSchoolInquiryStateV1";
   const BGM_VOLUME = 0.3;
+  let musicStartedByUser = false;
 
   const BG = {
     title: "./assets/images/title.png",
@@ -396,11 +397,11 @@
       </section>`;
 
     document.querySelector("#continueButton")?.addEventListener("click", () => {
-      playBackgroundMusic();
+      playBackgroundMusic(true);
       go(state.resumeScreen || "room1");
     });
     document.querySelector("#startButton").addEventListener("click", () => {
-      playBackgroundMusic();
+      playBackgroundMusic(true);
       if (resumable) {
         els.resetDialog.showModal();
       } else {
@@ -720,13 +721,13 @@
     const vertical = direction === "up" || direction === "down";
     explorer.avatar.style.backgroundImage = vertical
       ? 'url("./assets/sprites/hero-vertical-4x2.png")'
-      : 'url("./assets/sprites/hero-movement-6x2.png")';
-    explorer.avatar.style.backgroundSize = vertical ? "400% 200%" : "600% 200%";
+      : 'url("./assets/sprites/hero-side-walk-6x1.png")';
+    explorer.avatar.style.backgroundSize = vertical ? "400% 200%" : "600% 100%";
 
     if (!walking) {
       explorer.walkTime = 0;
       explorer.walkFrame = -1;
-      const idleRow = direction === "up" ? "100%" : "0%";
+      const idleRow = vertical && direction === "up" ? "100%" : "0%";
       explorer.avatar.style.backgroundPosition = `0% ${idleRow}`;
       explorer.avatar.style.setProperty("--frame-shift", "0px");
       explorer.avatar.style.setProperty("--step-bob", "0px");
@@ -741,7 +742,7 @@
     const alignment = vertical ? [0, -1, 0, 1] : [-8, 0, 0, 1, -3, 3];
     const bob = vertical ? [0, -2, 0, -2] : [0, -2, 0, -3, -1, -2];
     const signedShift = alignment[frame] * (explorer.facingLeft ? -1 : 1);
-    const row = direction === "up" ? "100%" : direction === "down" ? "0%" : "100%";
+    const row = vertical && direction === "up" ? "100%" : "0%";
     explorer.avatar.style.backgroundPosition = `${positions[frame]}% ${row}`;
     explorer.avatar.style.setProperty("--frame-shift", `${signedShift}px`);
     explorer.avatar.style.setProperty("--step-bob", `${bob[frame]}px`);
@@ -1104,15 +1105,16 @@
     }
   }
 
-  function playBackgroundMusic() {
+  function playBackgroundMusic(fromUserGesture = false) {
     if (!state.sound) {
       els.backgroundMusic.pause();
       return;
     }
+    if (fromUserGesture) musicStartedByUser = true;
     els.backgroundMusic.volume = BGM_VOLUME;
     const playRequest = els.backgroundMusic.play();
     playRequest?.catch(() => {
-      // Mobile browsers may wait for the next direct button press before playing.
+      // 일부 모바일 브라우저는 다음 직접 입력까지 재생을 보류합니다.
     });
   }
 
@@ -1132,7 +1134,7 @@
     saveState();
     els.soundButton.textContent = state.sound ? "🔊" : "🔇";
     if (state.sound) {
-      playBackgroundMusic();
+      playBackgroundMusic(true);
       playTone(620, 0.08);
     } else {
       pauseBackgroundMusic();
@@ -1192,6 +1194,21 @@
 
   window.addEventListener("pointerup", () => runtime.heldDirections.clear());
   window.addEventListener("blur", () => runtime.heldDirections.clear());
+
+  // 첫 재생이 모바일 정책으로 보류되면 다음 직접 터치에서 다시 시작합니다.
+  document.addEventListener("pointerdown", () => {
+    if (state.sound && state.screen !== "title" && els.backgroundMusic.paused) {
+      playBackgroundMusic(true);
+    }
+  }, { capture: true, passive: true });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      pauseBackgroundMusic();
+    } else if (state.sound && musicStartedByUser) {
+      playBackgroundMusic();
+    }
+  });
 
   [els.portalDialog, els.evidenceDialog, els.resetDialog, els.clueDialog].forEach(dialog => {
     dialog.addEventListener("click", event => {

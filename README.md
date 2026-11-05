@@ -37,6 +37,8 @@ assets/audio/star-magic-school-inquiry.mp3
 
 - 첫 화면의 **탐험 시작** 또는 **이어서 탐험하기** 버튼을 누르면 재생됩니다.
 - 모바일 브라우저의 자동 재생 제한을 고려해 사용자 버튼 입력 후 시작됩니다.
+- 첫 재생이 보류된 모바일 기기에서는 다음 화면 터치 때 자동으로 재생을 다시 시도합니다.
+- 다른 앱을 확인한 뒤 돌아오면 멈춘 위치에서 음악이 이어집니다.
 - 오른쪽 위의 `🔊/🔇` 버튼으로 배경음악과 효과음을 함께 켜거나 끌 수 있습니다.
 - 한 곡이 끝나면 자연스럽게 반복 재생됩니다.
 
@@ -60,6 +62,7 @@ assets/audio/star-magic-school-inquiry.mp3
 ## 모션 시트 배열
 
 - `hero-movement-6x2.png`: 6열 × 2행
+- `hero-side-walk-6x1.png`: 좌우 이동 전용 6열 × 1행(행 경계 잔상 제거)
 - `hero-actions-4x2.png`: 4열 × 2행
 - `lumi-actions-4x2.png`: 4열 × 2행
 - `portal-create-6x1.png`: 6열 × 1행

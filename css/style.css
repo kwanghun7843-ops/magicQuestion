@@ -771,19 +771,15 @@ button:disabled {
   z-index: 11;
   width: clamp(86px, 11vw, 132px);
   aspect-ratio: 1 / 1;
-  background-image: url("../assets/sprites/hero-movement-6x2.png");
+  background-image: url("../assets/sprites/hero-side-walk-6x1.png");
   background-repeat: no-repeat;
-  background-size: 600% 200%;
+  background-size: 600% 100%;
   background-position: 0 0;
   filter: drop-shadow(0 13px 11px rgba(3, 2, 22, 0.55));
   transform: translate(calc(-50% + var(--frame-shift, 0px)), calc(-78% + var(--step-bob, 0px)));
   transition: filter 0.15s ease;
   will-change: left, top, transform, background-position;
   pointer-events: none;
-}
-
-.explorer-avatar.walking {
-  background-position-y: 100%;
 }
 
 .explorer-avatar.face-left {
