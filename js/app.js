@@ -619,6 +619,7 @@
       vx: 0,
       vy: 0,
       facingLeft: false,
+      moveDirection: "down",
       walkTime: 0,
       walkFrame: -1,
       nearbyId: null,
@@ -691,33 +692,50 @@
 
     const movingSpeed = Math.hypot(explorer.vx, explorer.vy);
     const walking = movingSpeed > 0.55;
-    if (explorer.vx < -0.6) explorer.facingLeft = true;
-    if (explorer.vx > 0.6) explorer.facingLeft = false;
+    if (walking) {
+      if (Math.abs(explorer.vy) > Math.abs(explorer.vx) * 0.82) {
+        explorer.moveDirection = explorer.vy < 0 ? "up" : "down";
+      } else {
+        explorer.moveDirection = "side";
+        if (explorer.vx < -0.6) explorer.facingLeft = true;
+        if (explorer.vx > 0.6) explorer.facingLeft = false;
+      }
+    }
     explorer.avatar.classList.toggle("walking", walking);
-    explorer.avatar.classList.toggle("face-left", explorer.facingLeft);
-    updateWalkFrame(explorer, delta, walking, movingSpeed / speed);
+    explorer.avatar.classList.toggle("face-left", explorer.moveDirection === "side" && explorer.facingLeft);
+    explorer.avatar.classList.toggle("vertical", explorer.moveDirection !== "side");
+    updateWalkFrame(explorer, delta, walking, movingSpeed / speed, explorer.moveDirection);
     updateExplorerView(room);
     explorer.raf = requestAnimationFrame(explorationLoop);
   }
 
-  function updateWalkFrame(explorer, delta, walking, speedRatio) {
+  function updateWalkFrame(explorer, delta, walking, speedRatio, direction) {
+    const vertical = direction === "up" || direction === "down";
+    explorer.avatar.style.backgroundImage = vertical
+      ? 'url("./assets/sprites/hero-vertical-4x2.png")'
+      : 'url("./assets/sprites/hero-movement-6x2.png")';
+    explorer.avatar.style.backgroundSize = vertical ? "400% 200%" : "600% 200%";
+
     if (!walking) {
       explorer.walkTime = 0;
       explorer.walkFrame = -1;
-      explorer.avatar.style.backgroundPosition = "0% 0%";
+      const idleRow = direction === "up" ? "100%" : "0%";
+      explorer.avatar.style.backgroundPosition = `0% ${idleRow}`;
       explorer.avatar.style.setProperty("--frame-shift", "0px");
       explorer.avatar.style.setProperty("--step-bob", "0px");
       return;
     }
 
     explorer.walkTime += delta * Math.max(0.72, Math.min(1.05, speedRatio));
-    const frame = Math.floor(explorer.walkTime / 0.115) % 6;
+    const frameCount = vertical ? 4 : 6;
+    const frame = Math.floor(explorer.walkTime / 0.13) % frameCount;
     explorer.walkFrame = frame;
-    const positions = [0, 20, 40, 60, 80, 100];
-    const alignment = [-8, 0, 0, 1, -3, 3];
-    const bob = [0, -2, 0, -3, -1, -2];
+    const positions = vertical ? [0, 33.333, 66.667, 100] : [0, 20, 40, 60, 80, 100];
+    const alignment = vertical ? [0, -1, 0, 1] : [-8, 0, 0, 1, -3, 3];
+    const bob = vertical ? [0, -2, 0, -2] : [0, -2, 0, -3, -1, -2];
     const signedShift = alignment[frame] * (explorer.facingLeft ? -1 : 1);
-    explorer.avatar.style.backgroundPosition = `${positions[frame]}% 100%`;
+    const row = direction === "up" ? "100%" : direction === "down" ? "0%" : "100%";
+    explorer.avatar.style.backgroundPosition = `${positions[frame]}% ${row}`;
     explorer.avatar.style.setProperty("--frame-shift", `${signedShift}px`);
     explorer.avatar.style.setProperty("--step-bob", `${bob[frame]}px`);
   }
